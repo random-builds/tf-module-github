@@ -2,71 +2,71 @@ variable "name" {
   type = string
 }
 variable "description" {
-  type = string
+  type    = string
   default = ""
 }
 variable "visibility" {
-  type = string
+  type    = string
   default = "public"
   validation {
-    condition = contains(["public", "private", "internal"], var.visibility)
+    condition     = contains(["public", "private", "internal"], var.visibility)
     error_message = "Visibility must be one of: public, private, internal."
   }
 }
 variable "has_issues" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "has_discussions" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "has_projects" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "has_wiki" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "allow_merge_commit" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "allow_squash_merge" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "allow_rebase_merge" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "allow_auto_merge" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "allow_update_branch" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "delete_branch_on_merge" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "auto_init" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "archive_on_destroy" {
-  type = bool
+  type    = bool
   default = true
 }
 variable "is_template" {
-  type = bool
+  type    = bool
   default = false
 }
 variable "license_template" {
-  type = string
+  type    = string
   default = "AGPL-3.0"
 }
 variable "template" {
@@ -78,6 +78,6 @@ variable "template" {
 }
 
 variable "bypass_teams" {
-  type = set(string)
+  type    = set(string)
   default = []
 }

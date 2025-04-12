@@ -42,10 +42,10 @@ resource "github_repository" "repository" {
 
 resource "github_branch_protection" "branch_protection" {
   repository_id = github_repository.repository.id
-  pattern     = "main"
+  pattern       = "main"
 
-  allows_force_pushes = false
-  allows_deletions = false
+  allows_force_pushes             = false
+  allows_deletions                = false
   require_conversation_resolution = true
 
   required_status_checks {
@@ -57,12 +57,17 @@ resource "github_branch_protection" "branch_protection" {
   }
 
   required_pull_request_reviews {
-    dismiss_stale_reviews = true
-    require_code_owner_reviews = true
-    require_last_push_approval = true
+    dismiss_stale_reviews           = true
+    require_code_owner_reviews      = true
+    require_last_push_approval      = true
     required_approving_review_count = 1
-    pull_request_bypassers = var.bypass_teams
-    restrict_dismissals = true
-    dismissal_restrictions = var.bypass_teams
+    pull_request_bypassers          = var.bypass_teams
+    restrict_dismissals             = true
+    dismissal_restrictions          = var.bypass_teams
   }
+}
+
+resource "github_repository_dependabot_security_updates" "this" {
+  enabled    = true
+  repository = github_repository.repository.name
 }
