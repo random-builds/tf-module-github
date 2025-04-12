@@ -38,11 +38,6 @@ resource "github_repository" "repository" {
   }
 }
 
-resource "github_repository_tag_protection" "example" {
-  repository      = github_repository.repository.name
-  pattern         = "v*"
-}
-
 resource "github_branch_protection" "branch_protection" {
   repository_id = github_repository.repository.id
   pattern     = "main"
