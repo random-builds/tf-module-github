@@ -1,25 +1,61 @@
-variable "repositories" {
-  type = map(object({
-    description            = string
-    visibility             = optional(string, "public")
-    has_issues             = optional(bool, true)
-    has_discussions        = optional(bool, true)
-    has_projects           = optional(bool, true)
-    has_wiki               = optional(bool, true)
-    is_template            = optional(bool, false)
-    allow_merge_commit     = optional(bool, true)
-    allow_squash_merge     = optional(bool, true)
-    allow_rebase_merge     = optional(bool, true)
-    allow_auto_merge       = optional(bool, true)
-    allow_update_branch    = optional(bool, true)
-    delete_branch_on_merge = optional(bool, true)
-    auto_init              = optional(bool, true)
-    license_template       = optional(string, "AGPL-3.0")
-    archived               = optional(bool, false)
-    archive_on_destroy     = optional(bool, true)
-    template = optional(object({
-      owner      = string
-      repository = string
-    }))
+variable "name" {
+  type = string
+}
+variable "description" {
+  type = optional(string)
+}
+variable "visibility" {
+  type = optional(string, "public")
+  validation {
+    condition = contains(["public", "private", "internal"], var.visibility)
+    error_message = "Visibility must be one of: public, private, internal."
+  }
+}
+variable "has_issues" {
+  type = optional(bool, true)
+}
+variable "has_discussions" {
+  type = optional(bool, true)
+}
+variable "has_projects" {
+  type = optional(bool, true)
+}
+variable "has_wiki" {
+  type = optional(bool, true)
+}
+variable "allow_merge_commit" {
+  type = optional(bool, true)
+}
+variable "allow_squash_merge" {
+  type = optional(bool, true)
+}
+variable "allow_rebase_merge" {
+  type = optional(bool, true)
+}
+variable "allow_auto_merge" {
+  type = optional(bool, true)
+}
+variable "allow_update_branch" {
+  type = optional(bool, true)
+}
+variable "delete_branch_on_merge" {
+  type = optional(bool, true)
+}
+variable "auto_init" {
+  type = optional(bool, true)
+}
+variable "archive_on_destroy" {
+  type = optional(bool, true)
+}
+variable "is_template" {
+  type = optional(bool, false)
+}
+variable "license_template" {
+  type = optional(string, "AGPL-3.0")
+}
+variable "template" {
+  type = optional(object({
+    owner      = string
+    repository = string
   }))
 }

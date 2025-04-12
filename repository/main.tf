@@ -1,32 +1,30 @@
 resource "github_repository" "repository" {
-  for_each               = var.repositories
-  name                   = each.key
-  description            = each.value.description
-  visibility             = each.value.visibility
-  is_template            = each.value.is_template
-  delete_branch_on_merge = each.value.delete_branch_on_merge
+  name                   = var.name
+  description            = var.description
+  visibility             = var.visibility
+  is_template            = var.is_template
+  delete_branch_on_merge = var.delete_branch_on_merge
 
-  has_issues      = each.value.has_issues
-  has_discussions = each.value.has_discussions
-  has_projects    = each.value.has_projects
-  has_wiki        = each.value.has_wiki
+  has_issues      = var.has_issues
+  has_discussions = var.has_discussions
+  has_projects    = var.has_projects
+  has_wiki        = var.has_wiki
 
-  allow_auto_merge    = each.value.allow_auto_merge
-  allow_merge_commit  = each.value.allow_merge_commit
-  allow_rebase_merge  = each.value.allow_rebase_merge
-  allow_squash_merge  = each.value.allow_squash_merge
-  allow_update_branch = each.value.allow_update_branch
+  allow_auto_merge    = var.allow_auto_merge
+  allow_merge_commit  = var.allow_merge_commit
+  allow_rebase_merge  = var.allow_rebase_merge
+  allow_squash_merge  = var.allow_squash_merge
+  allow_update_branch = var.allow_update_branch
 
-  auto_init          = each.value.auto_init
-  license_template   = each.value.license_template
-  archived           = each.value.archived
-  archive_on_destroy = each.value.archive_on_destroy
+  auto_init          = var.auto_init
+  license_template   = var.license_template
+  archive_on_destroy = var.archive_on_destroy
 
   dynamic "template" {
-    for_each = each.value.template == null ? [] : [each.value.template]
+    for_each = var.template == null ? [] : [var.template]
     content {
-      owner      = each.value.template.owner
-      repository = each.value.template.repository
+      owner      = var.template.owner
+      repository = var.template.repository
     }
   }
 
@@ -41,14 +39,12 @@ resource "github_repository" "repository" {
 }
 
 resource "github_repository_tag_protection" "example" {
-  for_each   = github_repository.repository
-  repository = each.key
-  pattern    = "v*"
+  repository      = github_repository.repository.name
+  pattern         = "v*"
 }
 
 resource "github_branch_protection" "branch_protection" {
-  for_each = github_repository.repository
-  repository_id = each.value.id
+  repository_id = github_repository.repository.id
   pattern     = "main"
 
   require_conversation_resolution = true
