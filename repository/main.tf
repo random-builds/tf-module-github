@@ -36,16 +36,24 @@ resource "github_repository" "repository" {
       status = "enabled"
     }
   }
+
+  vulnerability_alerts = true
 }
 
 resource "github_branch_protection" "branch_protection" {
   repository_id = github_repository.repository.id
   pattern     = "main"
 
+  allows_force_pushes = false
+  allows_deletions = false
   require_conversation_resolution = true
 
   required_status_checks {
     strict = true
+  }
+
+  restrict_pushes {
+    push_allowances = var.bypass_teams
   }
 
   required_pull_request_reviews {
@@ -53,5 +61,8 @@ resource "github_branch_protection" "branch_protection" {
     require_code_owner_reviews = true
     require_last_push_approval = true
     required_approving_review_count = 1
+    pull_request_bypassers = var.bypass_teams
+    restrict_dismissals = true
+    dismissal_restrictions = var.bypass_teams
   }
 }

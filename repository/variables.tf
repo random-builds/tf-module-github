@@ -76,3 +76,8 @@ variable "template" {
   })
   default = null
 }
+
+variable "bypass_teams" {
+  type = set(string)
+  default = []
+}
