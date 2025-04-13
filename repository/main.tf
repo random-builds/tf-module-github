@@ -1,6 +1,6 @@
 resource "github_repository" "repository" {
-  name                   = var.name
-  description            = var.description
+  name        = var.name
+  description = var.description
   #checkov:skip=CKV_GIT_1: allow public repos
   visibility             = var.visibility
   is_template            = var.is_template
@@ -59,9 +59,9 @@ resource "github_branch_protection" "branch_protection" {
   }
 
   required_pull_request_reviews {
-    dismiss_stale_reviews           = true
-    require_code_owner_reviews      = true
-    require_last_push_approval      = true
+    dismiss_stale_reviews      = true
+    require_code_owner_reviews = true
+    require_last_push_approval = true
     #checkov:skip=CKV_GIT_5: only one approval should suffice
     required_approving_review_count = 1
     pull_request_bypassers          = var.bypass_teams
