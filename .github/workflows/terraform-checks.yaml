@@ -11,6 +11,6 @@ jobs:
   build:
     permissions:
       contents: read
-    uses: random-builds/gh-workflows/.github/workflows/terraform-check.yaml@fa822e940db0de772a79ace0e5aa0a7205681eab
+    uses: random-builds/gh-workflows/.github/workflows/terraform-check.yaml@bd62c00cd8fc523ef6c7bccd61a1d863ec67839d
     with:
       terraform_version: 1.11.4
