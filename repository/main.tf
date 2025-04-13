@@ -46,14 +46,16 @@ resource "github_repository_ruleset" "main" {
   target      = "branch"
   repository  = github_repository.repository.name
 
+  conditions {
+    ref_name {
+      exclude = []
+      include = ["refs/heads/main"]
+    }
+  }
+
   rules {
     non_fast_forward    = true
     required_signatures = true
-
-    branch_name_pattern {
-      operator = "regex"
-      pattern  = "^main$"
-    }
 
     pull_request {
       dismiss_stale_reviews_on_push     = true
@@ -85,15 +87,16 @@ resource "github_repository_ruleset" "non_main" {
   target      = "branch"
   repository  = github_repository.repository.name
 
+  conditions {
+    ref_name {
+      exclude = ["refs/heads/main"]
+      include = []
+    }
+  }
+
   rules {
     non_fast_forward    = true
     required_signatures = true
-
-    branch_name_pattern {
-      operator = "regex"
-      pattern  = "^main$"
-      negate   = true
-    }
   }
 }
 
