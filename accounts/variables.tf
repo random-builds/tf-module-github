@@ -11,3 +11,19 @@ variable "teams" {
     privacy     = optional(string, "secret")
   }))
 }
+
+variable "GITHUB_ORGANIZATION" {
+  type = string
+}
+
+variable "APP_ID" {
+  type = string
+}
+
+variable "APP_INSTALLATION_ID" {
+  type = string
+}
+
+variable "APP_PEM_FILE" {
+  type = string
+}

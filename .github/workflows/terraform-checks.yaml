@@ -1,0 +1,14 @@
+name: Terraform check
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.tf'
+
+jobs:
+  build:
+    permissions:
+      contents: read
+    uses: random-builds/gh-workflows/.github/workflows/terraform-check.yaml@9ba87278f6cc83b941dbb59496e230f71dc82482
+    with:
+      terraform_version: 1.11.4
