@@ -9,7 +9,7 @@ variable "description" {
 
 variable "visibility" {
   type    = string
-  default = "public"
+  default = "private"
   validation {
     condition     = contains(["public", "private", "internal"], var.visibility)
     error_message = "Visibility must be one of: public, private, internal."

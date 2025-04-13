@@ -5,10 +5,12 @@ on:
     paths:
       - '**.tf'
 
+permissions: read-all
+
 jobs:
   build:
     permissions:
       contents: read
-    uses: random-builds/gh-workflows/.github/workflows/terraform-check.yaml@9ba87278f6cc83b941dbb59496e230f71dc82482
+    uses: random-builds/gh-workflows/.github/workflows/terraform-check.yaml@ac72f5360047f2af1b2f884e713a069c09f7d8a3
     with:
       terraform_version: 1.11.4

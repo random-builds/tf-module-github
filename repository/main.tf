@@ -1,7 +1,6 @@
 resource "github_repository" "repository" {
-  name        = var.name
-  description = var.description
-  #checkov:skip=CKV_GIT_1: allow public repos
+  name                   = var.name
+  description            = var.description
   visibility             = var.visibility
   is_template            = var.is_template
   delete_branch_on_merge = var.delete_branch_on_merge
