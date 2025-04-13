@@ -81,7 +81,7 @@ resource "github_repository_ruleset" "main" {
   }
 }
 
-resource "github_repository_ruleset" "main" {
+resource "github_repository_ruleset" "non_main" {
   name        = "non-main"
   enforcement = "active"
   target      = "branch"
