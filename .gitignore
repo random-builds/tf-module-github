@@ -36,6 +36,4 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-.tflint.hcl
-
 .exclude
