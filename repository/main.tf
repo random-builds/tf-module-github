@@ -47,8 +47,6 @@ resource "github_repository_ruleset" "main" {
   repository  = github_repository.repository.name
 
   rules {
-    pattern = "main"
-
     non_fast_forward    = true
     required_signatures = true
 
@@ -88,8 +86,6 @@ resource "github_repository_ruleset" "non_main" {
   repository  = github_repository.repository.name
 
   rules {
-    pattern = "non-main"
-
     non_fast_forward    = true
     required_signatures = true
 
