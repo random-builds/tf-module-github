@@ -40,32 +40,79 @@ resource "github_repository" "repository" {
   vulnerability_alerts = true
 }
 
-resource "github_branch_protection" "branch_protection" {
-  repository_id = github_repository.repository.id
-  pattern       = "main"
+resource "github_repository_ruleset" "main" {
+  name        = "main"
+  enforcement = "active"
+  target      = "branch"
+  repository  = github_repository.repository.name
 
-  allows_force_pushes             = false
-  allows_deletions                = false
-  require_conversation_resolution = true
-  require_signed_commits          = true
+  rules {
+    pattern = "main"
 
-  required_status_checks {
-    strict = true
+    non_fast_forward    = true
+    required_signatures = true
+
+    branch_name_pattern {
+      operator = "regex"
+      pattern  = "^main$"
+    }
+
+    pull_request {
+      dismiss_stale_reviews_on_push     = true
+      require_code_owner_review         = true
+      require_last_push_approval        = true
+      required_review_thread_resolution = true
+      required_approving_review_count   = 2
+    }
+
+    required_code_scanning {
+      required_code_scanning_tool {
+        alerts_threshold          = "all"
+        security_alerts_threshold = "all"
+        tool                      = "CodeQL"
+      }
+    }
   }
 
-  restrict_pushes {
-    push_allowances = var.bypass_teams
+  bypass_actors {
+    actor_id    = 5
+    actor_type  = "RepositoryRole"
+    bypass_mode = "always"
   }
+}
 
-  required_pull_request_reviews {
-    dismiss_stale_reviews      = true
-    require_code_owner_reviews = true
-    require_last_push_approval = true
-    #checkov:skip=CKV_GIT_5: only one approval should suffice
-    required_approving_review_count = 1
-    pull_request_bypassers          = var.bypass_teams
-    restrict_dismissals             = true
-    dismissal_restrictions          = var.bypass_teams
+resource "github_repository_ruleset" "main" {
+  name        = "non-main"
+  enforcement = "active"
+  target      = "branch"
+  repository  = github_repository.repository.name
+
+  rules {
+    pattern = "non-main"
+
+    non_fast_forward    = true
+    required_signatures = true
+
+    branch_name_pattern {
+      operator = "regex"
+      pattern  = "^main$"
+      negate   = true
+    }
+  }
+}
+
+resource "github_repository_collaborators" "this" {
+  repository = github_repository.repository.name
+
+  dynamic "team" {
+    for_each = merge([
+      for permission in keys(var.team_collaborators) :
+      { for team in var.team_collaborators[permission] : "${team}-${permission}" => { id : team, permission : permission } }
+    ]...)
+    content {
+      team_id    = team.value.id
+      permission = team.value.permission
+    }
   }
 }
 

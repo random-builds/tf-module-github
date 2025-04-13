@@ -94,9 +94,15 @@ variable "template" {
   default = null
 }
 
-variable "bypass_teams" {
-  type    = set(string)
-  default = []
+variable "team_collaborators" {
+  type = object({
+    pull     = optional(list(string), [])
+    triage   = optional(list(string), [])
+    push     = optional(list(string), [])
+    maintain = optional(list(string), [])
+    admin    = optional(list(string), [])
+  })
+  default = {}
 }
 
 variable "GITHUB_ORGANIZATION" {
