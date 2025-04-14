@@ -11,8 +11,18 @@ resource "github_team" "team" {
   privacy     = each.value.privacy
 }
 
-resource "github_team_membership" "team_membership" {
-  for_each = merge([for k, v in var.members : { for team in v.teams : "${k}-${team}" => { username : k, team : team } }]...)
+resource "github_team_membership" "this" {
+  for_each = merge(
+    merge([
+      for team in keys(var.teams) :
+      { for member in var.teams[team].members : "${team}-${member}-member" => { member : member, team : team, role : "member" } }
+    ]...),
+    merge([
+      for team in keys(var.teams) :
+      { for member in var.teams[team].maintainers : "${team}-${member}-maintainer" => { member : member, team : team, role : "maintainer" } }
+    ]...)
+  )
   team_id  = github_team.team[each.value.team].id
-  username = each.value.username
+  username = each.value.member
+  role     = each.value.role
 }

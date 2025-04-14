@@ -9,6 +9,8 @@ variable "teams" {
   type = map(object({
     description = optional(string, "")
     privacy     = optional(string, "secret")
+    members     = optional(list(string), [])
+    maintainers = optional(list(string), [])
   }))
 }
 
